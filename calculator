@@ -1,0 +1,73 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def calculate():
+    try:
+        num1 = float(entry1.get())
+        num2 = float(entry2.get())
+        operation = operation_var.get()
+
+        if operation == "+":
+            result = num1 + num2
+        elif operation == "-":
+            result = num1 - num2
+        elif operation == "*":
+            result = num1 * num2
+        elif operation == "/":
+            if num2 == 0:
+                raise ZeroDivisionError
+            result = num1 / num2
+        else:
+            result = "Invalid"
+
+        result_label.config(text=f"Result: {result}")
+    except ValueError:
+        messagebox.showerror("Input Error", "Enter valid numbers.")
+    except ZeroDivisionError:
+        messagebox.showerror("Math Error", "Cannot divide by zero.")
+
+def clear_fields():
+    entry1.delete(0, tk.END)
+    entry2.delete(0, tk.END)
+    result_label.config(text="Result:")
+
+# Main window
+root = tk.Tk()
+root.title("Simple Calculator")
+root.geometry("350x300")
+
+# Title
+title = tk.Label(root, text="Calculator", font=("Helvetica", 18, "bold"))
+title.pack(pady=10)
+
+# First number
+entry1 = tk.Entry(root, font=("Arial", 14), justify="center")
+entry1.pack(pady=5)
+
+# Second number
+entry2 = tk.Entry(root, font=("Arial", 14), justify="center")
+entry2.pack(pady=5)
+
+# Operation menu
+operation_var = tk.StringVar(value="+")
+operations = ["+", "-", "*", "/"]
+op_menu = tk.OptionMenu(root, operation_var, *operations)
+op_menu.config(font=("Arial", 12))
+op_menu.pack(pady=5)
+
+# Buttons frame
+btn_frame = tk.Frame(root)
+btn_frame.pack(pady=10)
+
+calc_btn = tk.Button(btn_frame, text="Calculate", font=("Arial", 12), command=calculate, width=10)
+calc_btn.grid(row=0, column=0, padx=5)
+
+clear_btn = tk.Button(btn_frame, text="Clear", font=("Arial", 12), command=clear_fields, width=10)
+clear_btn.grid(row=0, column=1, padx=5)
+
+# Result display
+result_label = tk.Label(root, text="Result:", font=("Arial", 14))
+result_label.pack(pady=10)
+
+# Run app
+root.mainloop()
